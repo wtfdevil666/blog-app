@@ -1,8 +1,9 @@
 import { AppBar } from "@/components/appbar";
+import DailogWrapper from "@/components/auth/dialogwrapper";
+import LoginForm from "@/components/auth/loginform";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Lora } from "next/font/google";
-import Link from "next/link";
 
 const font = Lora({
     subsets: ["latin"],
@@ -25,14 +26,14 @@ export default function Home() {
                 </div>
             </div>
             <div className="pl-36">
-                <Link href={"/auth/signin"}>
-                    <Button
-                        size={"lg"}
-                        className="rounded-full text-xl w-[28vh] h-[5.5vh]"
-                    >
-                        Start Reading
-                    </Button>
-                </Link>
+                <Button
+                    size={"lg"}
+                    className="rounded-full text-xl w-[28vh] h-[5.5vh]"
+                >
+                    <DailogWrapper title="Sign In" buttonTitle="Start Reading">
+                        <LoginForm />
+                    </DailogWrapper>
+                </Button>
             </div>
         </div>
     );
