@@ -33,8 +33,8 @@ const RegisterForm = () => {
     const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
         startTransition(() => {
             register(values).then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
+                setError(data?.error);
+                setSuccess(data?.success);
             });
         });
     };
