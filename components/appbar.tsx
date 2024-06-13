@@ -15,7 +15,7 @@ export const AppBar = () => {
                 <div>
                     <Link href={"/auth/signin"}>SignIn</Link>
                 </div>
-                <Link href={"/auth/signin"}>
+                <Link href={"/auth/signup"}>
                     <Button className="rounded-full">
                         <div>Get started</div>
                     </Button>

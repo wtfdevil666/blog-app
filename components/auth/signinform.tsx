@@ -4,7 +4,11 @@ import LoginForm from "./loginform";
 const SignInForm = () => {
     return (
         <div className="flex justify-center items-center h-[75vh]">
-            <CardWrapper title="SignIn">
+            <CardWrapper
+                title="SignIn"
+                backButtonHref="/auth/signup"
+                backButtonLabel="Don't Have An Account?"
+            >
                 <LoginForm />
             </CardWrapper>
         </div>

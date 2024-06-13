@@ -1,5 +1,5 @@
 "use client";
-import { SignInSchema } from "@/schema";
+import { SignUpSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -7,9 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-const LoginForm = () => {
-    const form = useForm<z.infer<typeof SignInSchema>>({
-        resolver: zodResolver(SignInSchema),
+const RegisterForm = () => {
+    const form = useForm<z.infer<typeof SignUpSchema>>({
+        resolver: zodResolver(SignUpSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -19,6 +19,23 @@ const LoginForm = () => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(() => {})}>
                 <div className="space-y-8">
+                    <FormField
+                        name="name"
+                        control={form.control}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="johndoe"
+                                        type="text"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         name="email"
                         control={form.control}
@@ -60,4 +77,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
