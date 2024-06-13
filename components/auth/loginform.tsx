@@ -3,11 +3,25 @@ import { SignInSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { login } from "@/actions";
+import { FormError } from "../form-error";
+import { FormSuccess } from "../form-success";
+import { useState, useTransition } from "react";
 
 const LoginForm = () => {
+    const [error, setError] = useState<string | undefined>("");
+    const [success, setSuccess] = useState<string | undefined>("");
+    const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof SignInSchema>>({
         resolver: zodResolver(SignInSchema),
         defaultValues: {
@@ -15,9 +29,19 @@ const LoginForm = () => {
             password: "",
         },
     });
+    const onSubmit = (values: z.infer<typeof SignInSchema>) => {
+        setError("");
+        setSuccess("");
+        startTransition(() => {
+            login(values).then((data) => {
+                setError(data.error);
+                setSuccess(data.success);
+            });
+        });
+    };
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(() => {})}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="space-y-8">
                     <FormField
                         name="email"
@@ -28,6 +52,7 @@ const LoginForm = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        disabled={isPending}
                                         placeholder="johndoe.example.com"
                                         type="email"
                                     />
@@ -44,6 +69,7 @@ const LoginForm = () => {
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
                                     <Input
+                                        disabled={isPending}
                                         {...field}
                                         placeholder="*****"
                                         type="password"
@@ -54,6 +80,8 @@ const LoginForm = () => {
                         )}
                     />
                 </div>
+                <FormError message={error} />
+                <FormSuccess message={success} />
                 <Button className="w-full mt-8">Sign In</Button>
             </form>
         </Form>
