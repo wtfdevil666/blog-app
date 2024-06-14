@@ -1,9 +1,9 @@
 "use server"
-import { SignInSchema, SignUpSchema } from '@/schema'
+import { BlogSchema, SignInSchema, SignUpSchema } from '@/schema'
 import * as z from 'zod'
 import bcryptjs from "bcryptjs"
 import { db } from '@/lib/db'
-import { signIn } from '@/auth'
+import { auth, signIn } from '@/auth'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 import { AuthError } from 'next-auth'
 
@@ -38,21 +38,19 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
         return { error: "Invalid fields!" }
     }
 
-    const data = validatedField.data
+    const hashedPass = await bcryptjs.hash(validatedField.data?.password || "", 10)
 
-    const hashedPass = await bcryptjs.hash(data?.password || "", 10)
-
-    const existingUser = await db.user.findUnique({ where: { email: data?.email } })
+    const existingUser = await db.user.findUnique({ where: { email: validatedField.data?.email } })
     if (existingUser) {
         return { error: "Email already taken" }
     }
 
-    const { email, password } = data
+    const { email, password } = validatedField.data
 
     await db.user.create({
         data: {
-            name: data?.name,
-            email: data?.email,
+            name: validatedField.data?.name,
+            email: validatedField.data?.email,
             password: hashedPass
         }
     })
@@ -62,5 +60,26 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
     })
     return { success: "Signed Up" }
 
+}
+
+export const publish = async (values: z.infer<typeof BlogSchema>) => {
+    const session = await auth()
+    const validatedField = BlogSchema.safeParse(values)
+    if (!validatedField) {
+        return { error: "Wrong Inputs" }
+    }
+
+    const { title, description, content } = validatedField.data
+
+
+    const blog = await db.blog.create({
+        data: {
+            title: title,
+            description: description,
+            content: content,
+            userEmail: session.user.email
+        }
+    })
+    return blog
 }
 

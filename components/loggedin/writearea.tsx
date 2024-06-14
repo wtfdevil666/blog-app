@@ -4,14 +4,29 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import * as z from "zod";
+import { BlogSchema } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { publish } from "@/actions";
+import { useTransition } from "react";
 
 const WriteArea = () => {
+    const [isPending, startTransition] = useTransition();
+    const form = useForm<z.infer<typeof BlogSchema>>({
+        resolver: zodResolver(BlogSchema),
+        defaultValues: {
+            title: "",
+            description: "",
+            content: "",
+        },
+    });
 
-    const form = useForm();
-    const onSubmit = (values: any) => {
-        console.log(values);
+    const onSubmit = (values: z.infer<typeof BlogSchema>) => {
+        startTransition(() => {
+            publish(values);
+        });
     };
-    
+
     return (
         <div>
             <Form {...form}>
@@ -27,6 +42,7 @@ const WriteArea = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        disabled={isPending}
                                         placeholder="Title"
                                         type="text"
                                     />
@@ -42,6 +58,7 @@ const WriteArea = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        disabled={isPending}
                                         type="text"
                                         placeholder="Description"
                                     />
@@ -56,6 +73,7 @@ const WriteArea = () => {
                             <FormItem>
                                 <FormControl>
                                     <Textarea
+                                        disabled={isPending}
                                         placeholder="Tell Your Story ..."
                                         className="h-[220px]"
                                         {...field}
