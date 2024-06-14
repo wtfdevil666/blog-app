@@ -12,8 +12,8 @@ import Link from "next/link";
 interface CardWrapperProps {
     children: React.ReactNode;
     title: string;
-    backButtonLabel: string;
-    backButtonHref: string;
+    backButtonLabel?: string;
+    backButtonHref?: string;
 }
 
 const CardWrapper = ({
@@ -31,7 +31,7 @@ const CardWrapper = ({
                 <CardContent>{children}</CardContent>
                 <CardFooter>
                     <Button variant={"link"} className="w-full">
-                        <Link href={backButtonHref}>{backButtonLabel}</Link>
+                        <Link href={backButtonHref || ""}>{backButtonLabel}</Link>
                     </Button>
                 </CardFooter>
             </Card>
