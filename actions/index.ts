@@ -47,6 +47,8 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
         return { error: "Email already taken" }
     }
 
+    const { email, password } = data
+
     await db.user.create({
         data: {
             name: data?.name,
@@ -55,6 +57,9 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
         }
     })
 
+    await signIn("credentials", {
+        email, password, redirectTo: DEFAULT_LOGIN_REDIRECT
+    })
     return { success: "Signed Up" }
 
 }
