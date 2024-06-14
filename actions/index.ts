@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { auth, signIn } from '@/auth'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 import { AuthError } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 export const login = async (values: z.infer<typeof SignInSchema>) => {
     const validatedField = SignInSchema.safeParse(values)
@@ -81,10 +82,20 @@ export const publish = async (values: z.infer<typeof BlogSchema>) => {
         }
     })
     return blog
+
 }
 
 export const getAllBlogs = async () => {
     const blogs = await db.blog.findMany()
 
     return blogs
+}
+
+export const getBlogById = async (id: string) => {
+    const blog = await db.blog.findUnique({
+        where: {
+            id: id
+        }
+    })
+    return blog
 }

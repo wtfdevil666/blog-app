@@ -9,6 +9,7 @@ import { BlogSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { publish } from "@/actions";
 import { useTransition } from "react";
+import { permanentRedirect, redirect } from "next/navigation";
 
 const WriteArea = () => {
     const [isPending, startTransition] = useTransition();
@@ -24,6 +25,7 @@ const WriteArea = () => {
     const onSubmit = (values: z.infer<typeof BlogSchema>) => {
         startTransition(() => {
             publish(values);
+            permanentRedirect("/dashboard");
         });
     };
 
