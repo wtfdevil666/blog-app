@@ -1,11 +1,11 @@
 import { auth, signOut } from "@/auth";
-import { AppBar } from "@/components/appbar";
+import { AppBarLogged } from "@/components/loggedin/appbarlogged";
 
 const SettingsPage = async () => {
     const session = await auth();
     return (
         <div>
-            <AppBar />
+            <AppBarLogged />
             {JSON.stringify(session)}
             <form
                 action={async () => {

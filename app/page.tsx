@@ -4,6 +4,7 @@ import LoginForm from "@/components/auth/loginform";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Lora } from "next/font/google";
+import Link from "next/link";
 
 const font = Lora({
     subsets: ["latin"],
