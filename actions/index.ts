@@ -83,3 +83,8 @@ export const publish = async (values: z.infer<typeof BlogSchema>) => {
     return blog
 }
 
+export const getAllBlogs = async () => {
+    const blogs = await db.blog.findMany()
+
+    return blogs
+}

@@ -1,20 +1,11 @@
-import { auth, signOut } from "@/auth";
+import DashBoard from "@/components/dashboard";
 import { AppBarLogged } from "@/components/loggedin/appbarlogged";
 
 const SettingsPage = async () => {
-    const session = await auth();
     return (
         <div>
             <AppBarLogged />
-            {JSON.stringify(session)}
-            <form
-                action={async () => {
-                    "use server";
-                    await signOut();
-                }}
-            >
-                <button type="submit">Signout</button>
-            </form>
+            <DashBoard />
         </div>
     );
 };
