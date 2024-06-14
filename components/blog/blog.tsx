@@ -9,8 +9,8 @@ const Blog = async ({ id }: { id: string }) => {
     return (
         <div className="flex items-center justify-center">
             <div className=" w-[800px] mt-16 space-y-16 p-8">
-                <div className="text-5xl">{blog.title}</div>
-                <div className="text-md">{blog.description}</div>
+                <div className="text-5xl capitalize">{blog.title}</div>
+                <div className="text-md capitalize">{blog.description}</div>
                 <div className="text-lg">
                     <p>{blog.content}</p>
                 </div>

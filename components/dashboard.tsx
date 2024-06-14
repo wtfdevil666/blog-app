@@ -1,4 +1,4 @@
-import BlogRenderer from "./loggedin/blogrenderer";
+import BlogRenderer from "./blog/blogrenderer";
 
 const DashBoard = () => {
     return (

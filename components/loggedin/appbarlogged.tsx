@@ -2,16 +2,20 @@ import Link from "next/link";
 import AvatarComp from "../avatar";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
+import SignOut from "./signout";
+import { Button } from "../ui/button";
 
 export const AppBarLogged = async () => {
     const session = await auth();
     if (!session.user) return null;
     const headerList = headers();
     const pathname = headerList.get("current-path");
-    
+
     return (
         <div className="w-full border-b-[1px] border-black h-[76px] flex flex-row items-center justify-between px-32">
-            <div className="text-3xl p-4 font-semibold">Medium</div>
+            <div className="text-3xl p-4 font-semibold">
+                <Link href={"/"}>Medium</Link>
+            </div>
             <div className="flex flex-row p-6 space-x-10 items-center">
                 <div>
                     <Link href={"/auth/membership"}>Membership</Link>
@@ -32,6 +36,8 @@ export const AppBarLogged = async () => {
                             .toUpperCase()}
                     />
                 </Link>
+
+                <SignOut />
             </div>
         </div>
     );
