@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { AppBar } from "@/components/appbar";
 import DailogWrapper from "@/components/auth/dialogwrapper";
 import LoginForm from "@/components/auth/loginform";
@@ -10,7 +11,8 @@ const font = Lora({
     subsets: ["latin"],
     weight: ["600"],
 });
-export default function Home() {
+export default async function Home() {
+    const session = await auth();
     return (
         <div>
             <AppBar />
@@ -27,14 +29,28 @@ export default function Home() {
                 </div>
             </div>
             <div className="pl-36">
-                <Button
-                    size={"lg"}
-                    className="rounded-full text-xl w-[28vh] h-[5.5vh]"
-                >
-                    <DailogWrapper title="Sign In" buttonTitle="Start Reading">
-                        <LoginForm />
-                    </DailogWrapper>
-                </Button>
+                {session?.user ? (
+                    <Link href={"/dashboard"}>
+                        <Button
+                            size={"lg"}
+                            className="rounded-full text-xl w-[28vh] h-[5.5vh]"
+                        >
+                            Explore
+                        </Button>
+                    </Link>
+                ) : (
+                    <Button
+                        size={"lg"}
+                        className="rounded-full text-xl w-[28vh] h-[5.5vh]"
+                    >
+                        <DailogWrapper
+                            title="Sign In"
+                            buttonTitle="Start Reading"
+                        >
+                            <LoginForm />
+                        </DailogWrapper>
+                    </Button>
+                )}
             </div>
         </div>
     );
