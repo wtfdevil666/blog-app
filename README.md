@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+The final website is deployed on https://blog-l6d32odvn-wtfdevil666s-projects.vercel.app.
+There are some bugs that are needed to be fixed which I will eventually.
+
+##Todos
+-Integrate Google & Github login
+-Fix the edit feature bug
+-Membership feature
+
 ## Getting Started
 
 First, run the development server:
