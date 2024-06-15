@@ -1,6 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
@@ -9,7 +9,7 @@ import { BlogSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { publish } from "@/actions";
 import { useTransition } from "react";
-import { permanentRedirect, redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 const WriteArea = () => {

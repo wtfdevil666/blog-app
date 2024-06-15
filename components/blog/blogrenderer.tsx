@@ -15,7 +15,7 @@ const BlogRenderer = async () => {
         <div className="flex flex-col items-center justify-center pt-16 pb-16 space-y-6">
             {blogs.map((blog) => (
                 <Link key={blog.id} href={`/blog/${blog.id}`}>
-                    <Card className="w-[800px] flex flex-row">
+                    <Card className="w-[800px] flex flex-row justify-between">
                         <div>
                             <CardHeader className="space-y-8">
                                 <CardTitle className="text-xl">

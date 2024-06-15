@@ -1,5 +1,5 @@
+import { Social } from "../social";
 import CardWrapper from "./cardwrapper";
-import LoginForm from "./loginform";
 import RegisterForm from "./registerform";
 
 const SignUpForm = () => {
@@ -11,6 +11,7 @@ const SignUpForm = () => {
                 backButtonLabel="Already Have An Account?"
             >
                 <RegisterForm />
+                <Social/>
             </CardWrapper>
         </div>
     );

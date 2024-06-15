@@ -1,3 +1,4 @@
+import { Social } from "../social";
 import CardWrapper from "./cardwrapper";
 import LoginForm from "./loginform";
 
@@ -10,6 +11,7 @@ const SignInForm = () => {
                 backButtonLabel="Don't Have An Account?"
             >
                 <LoginForm />
+                <Social />
             </CardWrapper>
         </div>
     );

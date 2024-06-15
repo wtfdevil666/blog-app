@@ -3,7 +3,6 @@ import AvatarComp from "../avatar";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import SignOut from "./signout";
-import { Button } from "../ui/button";
 
 export const AppBarLogged = async () => {
     const session = await auth();

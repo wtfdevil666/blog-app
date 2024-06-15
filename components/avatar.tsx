@@ -7,7 +7,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import SignOut from "./loggedin/signout";
 
 const AvatarComp = ({ src, fallBack }: { src: string; fallBack: string }) => {
     return (

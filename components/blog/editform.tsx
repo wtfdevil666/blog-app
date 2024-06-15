@@ -5,15 +5,13 @@ import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { BlogEditSchema } from "@/schema";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { permanentRedirect } from "next/navigation";
 import { editBlog } from "@/actions";
 import { useRouter } from "next/navigation";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { FormSuccess } from "../form-success";
 
 const EditForm = ({
     id,
@@ -126,7 +124,6 @@ const EditForm = ({
                             </FormItem>
                         )}
                     />
-                    <FormSuccess message={success} />
                     <Button className="w-full mt-8">Save Changes</Button>
                 </form>
             </Form>

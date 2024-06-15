@@ -21,7 +21,7 @@ const DailogWrapper = ({
     return (
         <div>
             <Dialog>
-                <DialogTrigger>{buttonTitle}</DialogTrigger>
+                <DialogTrigger >{buttonTitle}</DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle className="text-xl text-center py-4">

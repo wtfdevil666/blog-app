@@ -51,6 +51,7 @@ const RegisterForm = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        disabled={isPending}
                                         placeholder="johndoe"
                                         type="text"
                                     />
@@ -68,6 +69,7 @@ const RegisterForm = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        disabled={isPending}
                                         placeholder="johndoe.example.com"
                                         type="email"
                                     />
@@ -85,6 +87,7 @@ const RegisterForm = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        disabled={isPending}
                                         placeholder="*****"
                                         type="password"
                                     />

@@ -5,7 +5,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Children } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
@@ -31,7 +30,9 @@ const CardWrapper = ({
                 <CardContent>{children}</CardContent>
                 <CardFooter>
                     <Button variant={"link"} className="w-full">
-                        <Link href={backButtonHref || ""}>{backButtonLabel}</Link>
+                        <Link href={backButtonHref || ""}>
+                            {backButtonLabel}
+                        </Link>
                     </Button>
                 </CardFooter>
             </Card>
