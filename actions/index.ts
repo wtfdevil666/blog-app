@@ -99,3 +99,16 @@ export const getBlogById = async (id: string) => {
     })
     return blog
 }
+
+export const editBlog = async (id: string, values: z.infer<typeof BlogSchema>) => {
+    await db.blog.update({
+        where: {
+            id: id
+        },
+        data: {
+            title: values?.title,
+            description: values?.description,
+            content: values?.content
+        }
+    })
+}

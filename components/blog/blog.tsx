@@ -1,7 +1,11 @@
 import { db } from "@/lib/db";
 import User from "./userdetailblog";
+import { auth } from "@/auth";
+import { Button } from "../ui/button";
+import Edit from "./editblog";
 
 const Blog = async ({ id }: { id: string }) => {
+    const session = await auth();
     const blog = await db.blog.findUnique({
         where: {
             id: id,
@@ -23,7 +27,21 @@ const Blog = async ({ id }: { id: string }) => {
                         <div className="capitalize">{user.name}</div>
                     </div>
                 </div>
-                <div className="text-md capitalize">{blog.description}</div>
+                <div className="text-md capitalize space-y-4">
+                    <div>{blog.description}</div>
+                    <div>
+                        {session?.user.email == blog.userEmail ? (
+                            <Button className="rounded-full bg-emerald-500">
+                                <Edit
+                                    id={id}
+                                    title={blog.title}
+                                    description={blog.description}
+                                    content={blog.content}
+                                />
+                            </Button>
+                        ) : null}
+                    </div>
+                </div>
                 <div className="text-lg">
                     <p>{blog.content}</p>
                 </div>

@@ -25,3 +25,9 @@ export const BlogSchema = z.object({
     description: z.string().min(1),
     content: z.string().min(1),
 })
+
+export const BlogEditSchema = z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    content: z.string().optional(),
+})

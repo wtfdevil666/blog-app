@@ -1,35 +1,61 @@
 "use client";
+
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { useEffect, useState, useTransition } from "react";
+import { BlogEditSchema } from "@/schema";
 import * as z from "zod";
-import { BlogSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { publish } from "@/actions";
-import { useTransition } from "react";
-import { permanentRedirect, redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
+import { editBlog } from "@/actions";
 import { useRouter } from "next/navigation";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { FormSuccess } from "../form-success";
 
-const WriteArea = () => {
+const EditForm = ({
+    id,
+    title,
+    description,
+    content,
+}: {
+    id: string;
+    title: string;
+    description: string;
+    content: string;
+}) => {
     const [isPending, startTransition] = useTransition();
-    const router = useRouter();
-    const form = useForm<z.infer<typeof BlogSchema>>({
-        resolver: zodResolver(BlogSchema),
+    const form = useForm<z.infer<typeof BlogEditSchema>>({
+        resolver: zodResolver(BlogEditSchema),
         defaultValues: {
             title: "",
             description: "",
             content: "",
         },
     });
+    const router = useRouter();
+    const [editTitle, setEditTitle] = useState(title);
+    const [editDescription, setEditDescription] = useState(description);
+    const [editContent, setEditContent] = useState(content);
+    const [success, setSuccess] = useState("");
 
-    const onSubmit = (values: z.infer<typeof BlogSchema>) => {
+    const onSubmit = (values: z.infer<typeof BlogEditSchema>) => {
         startTransition(() => {
-            publish(values);
+            const data = {
+                title: editTitle,
+                description: editDescription,
+                content: editContent,
+            };
+            console.log("id", values);
+            console.log("data", data);
+            editBlog(id, data);
+            setSuccess("Saved !");
             router.refresh();
-            permanentRedirect("/dashboard");
+            permanentRedirect(`/blog/${id}`);
         });
+        router.push;
     };
 
     return (
@@ -47,6 +73,9 @@ const WriteArea = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
+                                        onChangeCapture={(e) => {
+                                            setEditTitle(e.currentTarget.value);
+                                        }}
                                         disabled={isPending}
                                         placeholder="Title"
                                         type="text"
@@ -62,6 +91,11 @@ const WriteArea = () => {
                             <FormItem>
                                 <FormControl>
                                     <Input
+                                        onChangeCapture={(e) => {
+                                            setEditDescription(
+                                                e.currentTarget.value
+                                            );
+                                        }}
                                         {...field}
                                         disabled={isPending}
                                         type="text"
@@ -78,8 +112,13 @@ const WriteArea = () => {
                             <FormItem>
                                 <FormControl>
                                     <Textarea
-                                        disabled={isPending}
+                                        onChangeCapture={(e) => {
+                                            setEditContent(
+                                                e.currentTarget.value
+                                            );
+                                        }}
                                         placeholder="Tell Your Story ..."
+                                        disabled={isPending}
                                         className="h-[220px]"
                                         {...field}
                                     />
@@ -87,11 +126,12 @@ const WriteArea = () => {
                             </FormItem>
                         )}
                     />
-                    <Button className="w-full mt-8">Publish</Button>
+                    <FormSuccess message={success} />
+                    <Button className="w-full mt-8">Save Changes</Button>
                 </form>
             </Form>
         </div>
     );
 };
 
-export default WriteArea;
+export default EditForm;
