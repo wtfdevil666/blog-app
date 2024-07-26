@@ -9,79 +9,93 @@ export const router = express()
 const JWT_SECRET = process.env.JWT_SECRET as string
 
 router.post("/login", async (req: Request, res: Response) => {
-    const { email, password } = req.body
+    try {
+        const { email, password } = req.body
 
-    const validate = loginSchema.safeParse({ email, password })
-    if (!validate.success) {
-        return res.status(403).json({
-            error: "Invalid Inputs"
-        })
-    }
-
-    const user = await db.user.findUnique({
-        where: {
-            email: email
+        const validate = loginSchema.safeParse({ email, password })
+        if (!validate.success) {
+            return res.status(403).json({
+                error: "Invalid Inputs"
+            })
         }
-    })
 
-    if (!user) {
-        return res.status(404).json({
-            error: "User Not Found"
+        const user = await db.user.findUnique({
+            where: {
+                email: email
+            }
         })
-    }
 
-    const isMatch = await bcryptjs.compare(password, user.password)
-    if (!isMatch) {
+        if (!user) {
+            return res.status(404).json({
+                error: "User Not Found"
+            })
+        }
+
+        const isMatch = await bcryptjs.compare(password, user.password)
+        if (!isMatch) {
+            return res.status(401).json({
+                error: "Invalid Credentials"
+            })
+        }
+
+        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
+
+        return res.status(200).json({
+            success: "Done",
+            user: user,
+            token: token
+        })
+        
+    } catch (error) {
         return res.status(401).json({
-            error: "Invalid Credentials"
+            error: error
         })
     }
-
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
-
-    return res.status(200).json({
-        success: "Done",
-        user: user,
-        token: token
-    })
 })
 
 router.post("/register", async (req: Request, res: Response) => {
-    const { name, email, password } = req.body
+    try {
+        const { name, email, password } = req.body
 
-    const validate = registerSchema.safeParse({ name, email, password })
-    if (!validate.success) {
-        return res.status(403).json({
-            error: "Invalid Inputs"
+        const validate = registerSchema.safeParse({ name, email, password })
+        if (!validate.success) {
+            return res.status(403).json({
+                error: "Invalid Inputs"
+            })
+        }
+
+        const existingUser = await db.user.findUnique({
+            where: {
+                email: email
+            }
+        })
+        if (existingUser) {
+            return res.status(403).json({
+                error: "User already exists"
+            })
+        }
+
+        const hashed = await bcryptjs.hash(password, 10)
+
+        const user = await db.user.create({
+            data: {
+                name: name,
+                email: email,
+                password: hashed
+            }
+        })
+
+        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
+
+        return res.status(200).json({
+            success: "Registration Done",
+            user: user,
+            token: token
+        })
+
+    } catch (error) {
+        return res.status(401).json({
+            error: error
         })
     }
-
-    const existingUser = await db.user.findUnique({
-        where: {
-            email: email
-        }
-    })
-    if (existingUser) {
-        return res.status(403).json({
-            error: "User already exists"
-        })
-    }
-
-    const hashed = await bcryptjs.hash(password, 10)
-
-    const user = await db.user.create({
-        data: {
-            name: name,
-            email: email,
-            password: hashed
-        }
-    })
-
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
-
-    return res.status(200).json({
-        success: "Registration Done",
-        user: user,
-        token: token
-    })
 })
